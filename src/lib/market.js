@@ -3,15 +3,28 @@ var quoteManager = require('./quoteManager');
 var runInterval;
 
 module.exports = {
-  run: function (socket) {
+  run (socket) {
     runInterval = setInterval(function () {
       quoteManager.updateQuotes(function (err, newData) {
         socket.emit('new_data', JSON.stringify(newData));
       });
     }, 1000);
   },
+  //before
+  // run: function (socket) {
+  //   runInterval = setInterval(function () {
+  //     quoteManager.updateQuotes(function (err, newData) {
+  //       socket.emit('new_data', JSON.stringify(newData));
+  //     });
+  //   }, 1000);
+  // },
 
-  stop: function () {
+  stop() {
     clearInterval(runInterval);
   }
+
+  // //before
+  // stop: function () {
+  //   clearInterval(runInterval);
+  // }
 };

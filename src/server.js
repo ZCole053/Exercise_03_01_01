@@ -43,6 +43,7 @@ server.register([require('inert'), require('vision')], (err) => {//debug
   server.route(require('./routes'));
   server.start( (err) => {//converting with fat arrow
     if (err) throw err;
-    console.log('Connected on ' + server.info.uri);
+    console.log(`Connected on ${server.info.uri}`);
+    //console.log('Connected on ' + server.info.uri);
   });
 });

@@ -38,16 +38,28 @@ function initPizzas (callback) {
     startingDate = new Date();
 
   pizzas.forEach(function (pizza) {
-    realPizzas[pizza[0]] = new Pizza(startingDate, data.quotes[pizza[0]], pizza[0], pizza[1], pizza[2], pizza[3], pizza[4]);
+    //realPizzas[pizza[0]] = new Pizza(startingDate, data.quotes[pizza[0]], pizza[0], pizza[1], pizza[2], pizza[3], pizza[4]);
+    realPizzas[pizza[0]] = new Pizza(startingDate, data.quotes[pizza[0]], ...pizza);//changes are made to this one
   });
 
   callback(realPizzas);
 }
 
+
+//something of the same name that is assigning something with the same name
 module.exports = {
-  init: init,
-  getQuotes: getQuotes,
-  getAllQuotes: getAllQuotes,
-  getPizzas: getPizzas,
-  getPizza: getPizza
+  init,
+  getQuotes,
+  getAllQuotes,
+  getPizzas,
+  getPizza
 };
+
+//before
+// module.exports = {
+//   init: init,
+//   getQuotes: getQuotes,
+//   getAllQuotes: getAllQuotes,
+//   getPizzas: getPizzas,
+//   getPizza: getPizza
+// };

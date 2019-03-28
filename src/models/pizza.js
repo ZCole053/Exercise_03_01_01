@@ -5,41 +5,64 @@ function getRand () {
   return +(Math.random() * 100).toFixed(0);
 }
 
-//spread syntax
-function Pizza (startingDate, quotes, ...pizzaProps) {//changes into an array
-  // var self = this; (remove self variable), it will crash
+//rest syntax check for bug
+class Pizza{//changes into an array
+constructor (startingDate, quotes, ...pizzaProps){
+  //destructing pizza props; it is being spread to 3 variables
+    this.startingDate = startingDate;
+    [this.ticker, this.name, this.startingQuote,
+      this.variability =  getRand(),
+      this.positivity =  getRand()] = pizzaProps;
+    this.quotes = quotes || [this.startingQuote];
+  }
+  //more changes
+  // constructor (startingDate, quotes, ...pizzaProps){
+  //   this.startingDate = startingDate;
+  //   this.ticker = pizzaProps[0];
+  //   this.name = pizzaProps[1];
+  //   this.startingQuote = pizzaProps[2];
+  //   this.variability = pizzaProps[3] || getRand();//short circut = logical parameters 
+  //   this.positivity = pizzaProps[4] || getRand();//remove getrand() moved to paramter
+  //   this.quotes = quotes || [this.startingQuote];
+  // }
 
-  this.startingDate = startingDate;
-  this.ticker = pizzaProps[0];
-  this.name = pizzaProps[1];
-  this.startingQuote = pizzaProps[2];
-  this.variability = pizzaProps[3] || getRand();//short circut = logical parameters 
-  this.positivity = pizzaProps[4] || getRand();//remove getrand() moved to paramter
-  this.quotes = quotes || [this.startingQuote];
+//before
+  // function Pizza (startingDate, quotes, ...pizzaProps) {//changes into an array
+  //   // var self = this; (remove self variable), it will crash
+  
+  //   this.startingDate = startingDate;
+  //   this.ticker = pizzaProps[0];
+  //   this.name = pizzaProps[1];
+  //   this.startingQuote = pizzaProps[2];
+  //   this.variability = pizzaProps[3] || getRand();//short circut = logical parameters 
+  //   this.positivity = pizzaProps[4] || getRand();//remove getrand() moved to paramter
+  //   this.quotes = quotes || [this.startingQuote];
+  //}
+  
 
-    //gives a hoisting problem
+  //gives a hoisting problem
   // private methods//changing function into varaiable
- var addQuote = (quote) => {
-  this.quotes.push(quote);// changing self to this; also changing scope
+ _addQuote(quote) {
+    return this.quotes.push(quote);// changing self to this; also changing scope
 }
 
-var  getQuote = (quoteIndex) => {//remove return changes self to this and created arrow function
-  this.quotes[quoteIndex];
+_getQuote(quoteIndex){//remove return changes self to this and created arrow function
+    return this.quotes[quoteIndex];
 }
 
-  this.getNext = function () {
+ getNext(){
     var newQuote = fluxGen(this.getLast(), 1, this.variability, this.positivity)[0];
-    addQuote(newQuote);
+    this._addQuote(newQuote);
     return newQuote;
   };
 
-  this.getLast = function () {
-    return getQuote(this.quotes.length - 1);
+ getLast(){
+    return this._getQuote(this.quotes.length - 1);
   };
 
-  this.getDatedQuotes = function () {
+ getDatedQuotes(){
     var quotesMap = {},
-      curDate = startingDate;
+      {startingDate: curDate} = this//property not method
 
     this.quotes.forEach(function (quote) {
       quotesMap[curDate] = quote;
@@ -48,8 +71,6 @@ var  getQuote = (quoteIndex) => {//remove return changes self to this and create
 
     return quotesMap;
   };
-
-
 }
 
 Pizza.hydrate = function (pizzaObj) {
