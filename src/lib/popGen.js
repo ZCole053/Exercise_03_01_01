@@ -1,15 +1,30 @@
 var api = require('./api'),
-  _ = require('lodash');
+  _ = require('lodash');//
 
-function getPopularSlices (callback) {
-  _getFinalQuotes(function (err, finalQuotes) {
-    var orderedQuotes = _.orderBy(finalQuotes, ['quote'], ['desc']);
 
-    if (callback) {
-      callback(null, _.take(orderedQuotes, 4));
-    }
+  
+function getPopularSlices () {
+  return new Promise((resolve,reject) => {
+    _getFinalQuotes()
+    .then((finalQuotes) => {
+      const orderedQuotes = 
+        _.orderBy(finalQuotes, ['quote'], ['desc']);
+        resolve(_.take(orderedQuotes, 4));
+    })
+    .catch(reject);
   });
 }
+
+
+// function getPopularSlices (callback) {
+//   _getFinalQuotes(function (err, finalQuotes) {
+//     var orderedQuotes = _.orderBy(finalQuotes, ['quote'], ['desc']);
+
+//     if (callback) {
+//       callback(null, _.take(orderedQuotes, 4));
+//     }
+//   });
+// }
 
 function getMostPopular (callback) {
   _getFinalQuotes(function (err, finalQuotes) {
@@ -27,11 +42,21 @@ function getMostPopular (callback) {
 }
 
 function getNewestSlice (callback) {
-  api.getPizza('HAWA', function (err, pizza) {
-    if (callback) {
-      callback(null, { ticker: 'HAWA', quote: pizza.getLast() });
-    }
+  api.getPizza('HAWA')
+  //success
+  .then((pizza) =>{
+      if (callback) {
+        callback(null, { ticker: 'HAWA', quote: pizza.getLast() });
+      }
+  })
+  //failuar
+  .catch((err) => {
+    callback(err);
   });
+  //api.getPizza('HAWA', function (err, pizza) {
+    // if (callback) {
+    //   callback(null, { ticker: 'HAWA', quote: pizza.getLast() });
+    // }
 }
 
 function getMostImproved (callback) {
