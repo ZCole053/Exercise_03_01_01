@@ -17,14 +17,14 @@ module.exports = function (request, reply) {
 
   //feeding in an array of tasks similar to an array
   //returns only one then passes onto the next function as long as it gets a resolve
-  Promise.all(promises)
+  Promise.all(promises)//gives back only one result
   .then((results) => {
     const context = {
       popSlices: results[0],
-      mostPopular: results[0],
-      newestSlice: results[0],
-      mostImproved: results[0],
-      pizzas: results[0],
+      mostPopular: results[1],
+      newestSlice: results[2],
+      mostImproved: results[3],
+      pizzas: results[4]
     };
     return reply.view('index', context);
   })
