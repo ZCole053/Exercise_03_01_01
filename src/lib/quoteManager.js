@@ -7,12 +7,9 @@ module.exports = {
     //everything was moved into the promise
     return new Promise((resolve, reject) => {
       api.getAllPizzas()
-      .then((pizzas) => {
-        const newData = [];
-        let pizza;
-        if (err) {
-          reject(err);
-        } else { //added else
+        .then((pizzas) => {
+          const newData = [];
+          let pizza;
           //sets pizza to the key
           for (const key in pizzas) {
             pizza = pizzas[key];
@@ -27,14 +24,13 @@ module.exports = {
           //taking care of succuess
           resolve(newData);
           //console.log(`${newData} updating quotes`); one line,unreadable
-        } //end of added else
-      })
-      .catch(reject);
+        })
+        .catch(reject);
     });
-      //console.log(`newData`);
-      //console.log('updating quotes');
-      //callback(null, newData); remove completely
-      //updateQuotes (callback) { getting ride of call back we don't need it
+    //console.log(`newData`);
+    //console.log('updating quotes');
+    //callback(null, newData); remove completely
+    //updateQuotes (callback) { getting ride of call back we don't need it
   }
 
   // //before

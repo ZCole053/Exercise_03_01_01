@@ -10,12 +10,7 @@ module.exports = function (request, reply) {
     return reply('No ticker provided');
   }
 
-  dataStore.getPizza(ticker, function (err, pizza) {
-    if (err) {
-      console.error(err);
-      reply(err);
-    } else {
-      reply(pizza);
-    }
-  });
+  dataStore.getPizza(ticker) 
+  .then(reply)//callback gives err either one will be populated and returns the reply
+  .catch(reply)
 };

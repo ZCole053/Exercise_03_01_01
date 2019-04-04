@@ -8,7 +8,7 @@ function getPopularSlices () {
     _getFinalQuotes()
     .then((finalQuotes) => {
       const orderedQuotes = 
-        _.orderBy(finalQuotes, ['quote'], ['desc']);
+        _.orderBy([...finalQuotes], ['quote'], ['desc']);//destructuring
         resolve(_.take(orderedQuotes, 4));
     })
     .catch(reject);
@@ -32,7 +32,8 @@ function getMostPopular () {
     _getFinalQuotes() 
     .then((finalQuotes) => {
       //changed for least scope possible
-      const mostPopular = finalQuotes.reduce(function (best, curr) {
+      //spread syntax 
+      const mostPopular = [...finalQuotes].reduce(function (best, curr) {
         if (curr.quote > best.quote) {
           return curr;
         }
@@ -105,7 +106,7 @@ function getMostImproved () {
   return new Promise((resolve,reject) => {
     //fix the callback
     api.getAllQuotes()
-      .then(() => {
+      .then((allQuotes) => {
           const diffQuotes = [];
         for (var key in allQuotes) {
           diffQuotes.push({
@@ -153,14 +154,16 @@ function getMostImproved () {
 
 function _getFinalQuotes () {
   return new Promise((resolve, reject) => {
-    const finalQuotes = [];
+   // const finalQuotes = [];//changing to set
+    const finalQuotes = new Set();
     api.getAllQuotes()
     .then((allQuotes) => {
       for (const key in allQuotes) {
-        finalQuotes.push({
+        finalQuotes.add({//changed push to add
           ticker: key,
           quote: allQuotes[key][allQuotes[key].length - 1],
-          diffLast: _percentOf(allQuotes[key][allQuotes[key].length - 2], allQuotes[key][allQuotes[key].length - 1])
+          diffLast: _percentOf(allQuotes[key][allQuotes[key].length - 2], 
+          allQuotes[key][allQuotes[key].length - 1])
         });
       }
         resolve(finalQuotes);
